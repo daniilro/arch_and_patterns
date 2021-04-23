@@ -3,9 +3,6 @@
 '''
 import time
 from datetime import date
-from wsgiref.simple_server import make_server
-from wsgiref.util import setup_testing_defaults
-
 from jinja2 import Template
 
 
@@ -71,7 +68,8 @@ def fc_debug(request):
         request['debug'] = True
 
 
-fc_list = [fc_base, fc_debug]
+fc_list = [fc_base,
+           fc_debug]
 
 
 #############################################################
@@ -82,7 +80,7 @@ class Application:
         self.fc_list = fc_list
 
     def __call__(self, environ, start_response):
-        setup_testing_defaults(environ)
+        # setup_testing_defaults(environ)
         print(f"{environ['PATH_INFO']} requested")
         path = environ['PATH_INFO']
         if path[-1] != '/':
@@ -100,10 +98,5 @@ class Application:
         return body
 
 
-application = Application(pc_list, fc_list)
-
 #############################################################
-PORT = 8000
-with make_server('', PORT, application) as httpd:
-    print(f'Starting on port {PORT}...')
-    httpd.serve_forever()
+application = Application(pc_list, fc_list)
