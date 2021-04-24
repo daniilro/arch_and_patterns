@@ -11,7 +11,6 @@ from views import PcWelcome, PcIndex, PcAbout, PcInfo
 #############################################################
 def fc_base(request):
     print("fc_base")
-    print(request)
     request['timestamp'] = time.time()
     request['data'] = date.today()
 
