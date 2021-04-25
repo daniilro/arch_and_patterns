@@ -4,8 +4,6 @@
 import time
 from datetime import date
 
-from pc_main import PcWelcome, PcIndex, PcAbout, PcInfo, PcNotFound
-
 
 # Front controllers
 #############################################################
