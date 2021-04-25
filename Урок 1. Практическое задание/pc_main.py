@@ -21,6 +21,7 @@ class PcAbout:
     def __call__(self, request):
         return '200 OK', [b'About']
 
+
 #############################################################################
 
 
@@ -31,6 +32,7 @@ class PcInfo:
             render(
                 'info.html', timestamp=request.get(
                     'timestamp', None))]
+
 
 #############################################################################
 

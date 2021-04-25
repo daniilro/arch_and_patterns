@@ -4,7 +4,7 @@
 import time
 from datetime import date
 
-from views import PcWelcome, PcIndex, PcAbout, PcInfo, PcNotFound
+from pc_main import PcWelcome, PcIndex, PcAbout, PcInfo, PcNotFound
 
 
 # Front controllers
