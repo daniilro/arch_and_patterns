@@ -30,7 +30,7 @@ fc_list = [fc_base,
 
 
 pc_list = {
-    '/': PcWelcome(),
+    '/': PcInfo(), #PcWelcome(),
     '/index/': PcIndex(),
     '/about/': PcAbout(),
     '/info/': PcInfo(),

@@ -1,7 +1,7 @@
 '''
 
 '''
-from simba_framework.templator import render
+from dindondon_framework.templator import render
 
 
 #############################################################################
