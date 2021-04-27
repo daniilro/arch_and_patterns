@@ -4,6 +4,8 @@
 import time
 from datetime import date
 
+from views import PcWelcome, PcIndex, PcAbout, PcInfo
+
 
 # Front controllers
 #############################################################
@@ -23,5 +25,15 @@ def fc_debug(request):
 
 fc_list = [fc_base,
            fc_debug]
+
+#############################################################
+
+
+pc_list = {
+    '/': PcWelcome(),
+    '/index/': PcIndex(),
+    '/about/': PcAbout(),
+    '/info/': PcInfo(),
+}
 
 #############################################################
