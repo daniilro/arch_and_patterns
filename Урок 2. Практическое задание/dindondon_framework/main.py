@@ -4,7 +4,7 @@
 
 import quopri
 
-from simba_framework.requests import GetRequests, PostRequests
+from dindondon_framework.requestor import GetRequests, PostRequests
 
 
 #############################################################################
