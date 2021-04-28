@@ -7,7 +7,10 @@ from dindondon_framework.templator import render
 #############################################################################
 class PcWelcome:
     def __call__(self, request):
-        return '200 OK', [render('contact.html', data=request.get('data', None))]
+        return '200 OK', [
+            render(
+                'contact.html', data=request.get(
+                    'data', None))]
 
 
 #############################################################################
@@ -26,12 +29,27 @@ class PcAbout:
 class PcInfo:
     def __call__(self, request):
         print(request)
-        return '200 OK', [render('info.html', timestamp=request.get('timestamp', None))]
+        return '200 OK', [
+            render(
+                'info.html', timestamp=request.get(
+                    'timestamp', None))]
 
 
 #############################################################################
 class PcContact:
     def __call__(self, request):
-        return '200 OK', [render('contact.html', data=request.get('data', None))]
+        return '200 OK', [
+            render(
+                'contact.html', data=request.get(
+                    'data', None))]
+
 
 #############################################################################
+pc_list = {
+    '/': PcIndex(),  # PcWelcome(),
+    '/index/': PcIndex(),
+    '/about/': PcAbout(),
+    '/info/': PcInfo(),
+}
+
+#############################################################
