@@ -24,19 +24,16 @@ class Framework:
     def __call__(self, environ, start_response):
 
         path = environ['PATH_INFO']
-        if path[-1] != '/':
-            path = path + '/'
-        if path in self.pc_list:
-            view = self.pc_list[path]
-        else:
-            view = PcDefault()
-        print(f"\'{environ['PATH_INFO']}\' requested")
+        if not path.endswith('/'):
+            path = f'{path}/'
 
         request = {}
 
         method = environ['REQUEST_METHOD']
         print(f"REQUEST_METHOD = \'{method}\'")
         print(f"QUERY_STRING = \'{environ['QUERY_STRING']}\'")
+
+        request['method'] = method
 
         if method == 'POST':
             data = PostRequests().get_request_params(environ)
@@ -53,12 +50,19 @@ class Framework:
                 print(f"{r}={request['request_params'][r]}")
             print(f'---\n')
 
+        if path in self.pc_list:
+            view = self.pc_list[path]
+        else:
+            view = PcDefault()
+        print(f"\'{environ['PATH_INFO']}\' requested")
+
         # front controller
         for front in self.fc_list:
             front(request)
+
         code, body = view(request)
         start_response(code, [('Content-Type', 'text/html')])
-        return body
+        return [body.encode('utf-8')]
 
     @staticmethod
     def decode_value(data):

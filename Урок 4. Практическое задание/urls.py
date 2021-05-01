@@ -10,7 +10,7 @@ from datetime import date
 def fc_base(request):
     print("fc_base")
     request['timestamp'] = time.time()
-    request['data'] = date.today()
+    request['date'] = date.today()
 
 
 #############################################################
