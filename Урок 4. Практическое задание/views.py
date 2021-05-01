@@ -2,9 +2,10 @@
 
 '''
 from dindondon_framework.templator import renderer
-from patterns.base_patterns import Engine  # , Logger
+from patterns.base_patterns import Engine , Logger
 
 site = Engine()
+logger = Logger('main')
 
 TEMPLATES_FOLDER = 'templates'
 
@@ -12,6 +13,7 @@ TEMPLATES_FOLDER = 'templates'
 #############################################################################
 class PcWelcome:
     def __call__(self, request):
+        logger.log("PcWelcome.__call__")
         return '200 OK', renderer(
             'contact.html', folder=TEMPLATES_FOLDER, data=request.get(
                 'data', None))
@@ -20,6 +22,7 @@ class PcWelcome:
 #############################################################################
 class PcIndex:
     def __call__(self, request):
+        logger.log("PcIndex.__call__")
         return '200 OK', renderer('index.html', objects_list=site.categories)
 
 
@@ -89,12 +92,15 @@ class PcCreateCategory:
 #############################################################
 class PcCoursesList:
     def __call__(self, request):
-#        logger.log('Список курсов')
+        logger.log('Список курсов')
         try:
-            category = site.find_category_by_id(int(request['request_params']['id']))
-            return '200 OK', renderer('course_list.html', objects_list=category.courses, name=category.name, id=category.id)
+            category = site.find_category_by_id(
+                int(request['request_params']['id']))
+            return '200 OK', renderer(
+                'course_list.html', objects_list=category.courses, name=category.name, id=category.id)
         except KeyError:
             return '200 OK', 'No courses have been added yet'
+
 
 #############################################################
 class PcCreateCourse:
@@ -116,16 +122,18 @@ class PcCreateCourse:
                 site.courses.append(course)
 
             return '200 OK', renderer('course_list.html', objects_list=category.courses,
-                                    name=category.name, id=category.id)
+                                      name=category.name, id=category.id)
 
         else:
             try:
                 self.category_id = int(request['request_params']['id'])
                 category = site.find_category_by_id(int(self.category_id))
 
-                return '200 OK', renderer('create_course.html', name=category.name, id=category.id)
+                return '200 OK', renderer(
+                    'create_course.html', name=category.name, id=category.id)
             except KeyError:
                 return '200 OK', 'No categories have been added yet'
+
 
 #############################################################
 class PcCopyCourse:
@@ -141,9 +149,11 @@ class PcCopyCourse:
                 new_course.name = new_name
                 site.courses.append(new_course)
 
-            return '200 OK', renderer('course_list.html', objects_list=site.courses)
+            return '200 OK', renderer(
+                'course_list.html', objects_list=site.courses)
         except KeyError:
             return '200 OK', 'No courses have been added yet'
+
 
 #############################################################
 pc_list = {
