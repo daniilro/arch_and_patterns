@@ -144,7 +144,7 @@ class SingletonByName(type):
             name = args[0]
         if kwargs:
             name = kwargs['name']
-
+        print(f"name = {name}")
         if name in cls.__instance:
             return cls.__instance[name]
         else:
