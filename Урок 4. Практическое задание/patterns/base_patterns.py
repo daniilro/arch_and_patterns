@@ -132,7 +132,7 @@ class Engine:
         return val_decode_str.decode('UTF-8')
 
 
-# порождающий паттерн Синглтон
+###############################################################################
 class SingletonByName(type):
 
     def __init__(cls, name, bases, attrs, **kwargs):
@@ -144,7 +144,7 @@ class SingletonByName(type):
             name = args[0]
         if kwargs:
             name = kwargs['name']
-        print(f"name = {name}")
+        print(f"SingletonByName - name = {name}")
         if name in cls.__instance:
             return cls.__instance[name]
         else:
@@ -152,6 +152,7 @@ class SingletonByName(type):
             return cls.__instance[name]
 
 
+###############################################################################
 class Logger(metaclass=SingletonByName):
 
     def __init__(self, name):
@@ -160,3 +161,5 @@ class Logger(metaclass=SingletonByName):
     @staticmethod
     def log(text):
         print('log--->', text)
+
+###############################################################################

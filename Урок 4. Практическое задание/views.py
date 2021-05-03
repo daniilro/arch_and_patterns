@@ -126,6 +126,8 @@ class PcCreateCourse:
 
         else:
             try:
+                print("ssssssssssssssssssssssssssssssssssssssssssss")
+                print(request['request_params'])
                 self.category_id = int(request['request_params']['id'])
                 category = site.find_category_by_id(int(self.category_id))
 
@@ -138,6 +140,9 @@ class PcCreateCourse:
 #############################################################
 class PcCopyCourse:
     def __call__(self, request):
+
+        print(f"PcCopyCourse - request: {request}")
+
         request_params = request['request_params']
 
         try:

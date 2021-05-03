@@ -10,7 +10,7 @@ from dindondon_framework.requestor import GetRequests, PostRequests
 #############################################################################
 class PcDefault:
     def __call__(self, request):
-        return '404 Not Found', [b'404 PAGE Not Found']
+        return '404 Not Found', '404 PAGE Not Found'
 
 
 #############################################################################
