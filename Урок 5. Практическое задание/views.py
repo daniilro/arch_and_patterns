@@ -2,10 +2,13 @@
 
 '''
 from dindondon_framework.templator import renderer
-from patterns.base_patterns import Engine , Logger
+from patterns.base_patterns import Engine, Logger
+from patterns.decors import AppRoute
 
 site = Engine()
 logger = Logger('main')
+
+pc_list = {}
 
 TEMPLATES_FOLDER = 'templates'
 
@@ -20,6 +23,8 @@ class PcWelcome:
 
 
 #############################################################################
+@AppRoute(routes=pc_list, url='/')
+#@AppRoute(routes=pc_list, url='/index/')
 class PcIndex:
     def __call__(self, request):
         logger.log("PcIndex.__call__")
@@ -27,6 +32,7 @@ class PcIndex:
 
 
 #############################################################################
+@AppRoute(routes=pc_list, url='/about/')
 class PcAbout:
     def __call__(self, request):
         return '200 OK', renderer(
@@ -34,6 +40,7 @@ class PcAbout:
 
 
 #############################################################################
+@AppRoute(routes=pc_list, url='/info/')
 class PcInfo:
     def __call__(self, request):
         print(f"--- PcInfo ---")
@@ -53,12 +60,14 @@ class PcContact:
 
 
 #############################################################################
+@AppRoute(routes=pc_list, url='/feedback/')
 class PcFeedback:
     def __call__(self, request):
         return '200 OK', renderer('feedback.html', folder=TEMPLATES_FOLDER)
 
 
 #############################################################################
+@AppRoute(routes=pc_list, url='/create-category/')
 class PcCreateCategory:
     def __call__(self, request):
 
@@ -90,6 +99,7 @@ class PcCreateCategory:
 
 
 #############################################################
+@AppRoute(routes=pc_list, url='/courses-list/')
 class PcCoursesList:
     def __call__(self, request):
         logger.log('Список курсов')
@@ -103,6 +113,7 @@ class PcCoursesList:
 
 
 #############################################################
+@AppRoute(routes=pc_list, url='/create-course/')
 class PcCreateCourse:
     category_id = -1
 
@@ -126,7 +137,6 @@ class PcCreateCourse:
 
         else:
             try:
-                print("ssssssssssssssssssssssssssssssssssssssssssss")
                 print(request['request_params'])
                 self.category_id = int(request['request_params']['id'])
                 category = site.find_category_by_id(int(self.category_id))
@@ -138,6 +148,7 @@ class PcCreateCourse:
 
 
 #############################################################
+@AppRoute(routes=pc_list, url='/copy-course/')
 class PcCopyCourse:
     def __call__(self, request):
 
@@ -158,20 +169,5 @@ class PcCopyCourse:
                 'course_list.html', objects_list=site.courses)
         except KeyError:
             return '200 OK', 'No courses have been added yet'
-
-
-#############################################################
-pc_list = {
-    '/': PcIndex(),  # PcWelcome(),
-    '/index/': PcIndex(),
-    '/about/': PcAbout(),
-    '/info/': PcInfo(),
-    '/feedback/': PcFeedback(),
-    '/create-category/': PcCreateCategory(),
-    '/courses-list/': PcCoursesList(),
-    '/create-course/': PcCreateCourse(),
-    '/copy-course/': PcCopyCourse()
-
-}
 
 #############################################################
