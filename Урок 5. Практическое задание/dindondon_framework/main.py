@@ -23,9 +23,9 @@ class Framework:
 
     def __call__(self, environ, start_response):
 
-        path = environ['PATH_INFO']
-        if not path.endswith('/'):
-            path = f'{path}/'
+        path = environ['PATH_INFO'] if environ['PATH_INFO'].endswith(
+            '/') else environ['PATH_INFO'] + '/'
+        print(f"\'{environ['PATH_INFO']}\' requested")
 
         request = {}
 
@@ -54,7 +54,6 @@ class Framework:
             view = self.pc_list[path]
         else:
             view = PcDefault()
-        print(f"\'{environ['PATH_INFO']}\' requested")
 
         # front controller
         for front in self.fc_list:
@@ -72,3 +71,31 @@ class Framework:
             val_decode_str = quopri.decodestring(val).decode('UTF-8')
             new_data[k] = val_decode_str
         return new_data
+
+
+#############################################################################
+
+class DebugApplication(Framework):
+
+    def __init__(self, routes_obj, fronts_obj):
+        self.application = Framework(routes_obj, fronts_obj)
+        super().__init__(routes_obj, fronts_obj)
+
+    def __call__(self, environ, start_response):
+        print('DebugApplication MODE')
+        print(environ)
+        return self.application(environ, start_response)
+
+
+#############################################################################
+class FakeApplication(Framework):
+
+    def __init__(self, routes_obj, fronts_obj):
+        self.application = Framework(routes_obj, fronts_obj)
+        super().__init__(routes_obj, fronts_obj)
+
+    def __call__(self, environ, start_response):
+        print('FakeApplication MODE')
+        start_response('200 OK', [('Content-Type', 'text/html')])
+        return [
+            f"{environ['PATH_INFO']} requested. But not now. HO-HO-HO!!!".encode('utf-8')]
