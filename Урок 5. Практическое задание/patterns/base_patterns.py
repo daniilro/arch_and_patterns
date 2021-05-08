@@ -160,6 +160,6 @@ class Logger(metaclass=SingletonByName):
 
     @staticmethod
     def log(text):
-        print('log--->', text)
+        print(f'log ---> {text}')
 
 ###############################################################################

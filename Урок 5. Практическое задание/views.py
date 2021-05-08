@@ -1,9 +1,10 @@
 '''
 
 '''
+
 from dindondon_framework.templator import renderer
 from patterns.base_patterns import Engine, Logger
-from patterns.decors import AppRoute
+from patterns.decors import AppRouter, TimeIt
 
 site = Engine()
 logger = Logger('main')
@@ -23,25 +24,27 @@ class PcWelcome:
 
 
 #############################################################################
-@AppRoute(routes=pc_list, url='/')
-#@AppRoute(routes=pc_list, url='/index/')
+@AppRouter(routes=pc_list, url='/')
 class PcIndex:
+    @TimeIt(name="PcIndex")
     def __call__(self, request):
-        logger.log("PcIndex.__call__")
+        logger.log(f"{self.__class__.__name__} calling. request = {request}")
         return '200 OK', renderer('index.html', objects_list=site.categories)
 
 
 #############################################################################
-@AppRoute(routes=pc_list, url='/about/')
+@AppRouter(routes=pc_list, url='/about/')
 class PcAbout:
+    @TimeIt(name="PcAbout")
     def __call__(self, request):
         return '200 OK', renderer(
             'about.html', folder=TEMPLATES_FOLDER, objects_list=site.categories)
 
 
 #############################################################################
-@AppRoute(routes=pc_list, url='/info/')
+@AppRouter(routes=pc_list, url='/info/')
 class PcInfo:
+    @TimeIt(name="PcInfo")
     def __call__(self, request):
         print(f"--- PcInfo ---")
         print(request)
@@ -60,15 +63,17 @@ class PcContact:
 
 
 #############################################################################
-@AppRoute(routes=pc_list, url='/feedback/')
+@AppRouter(routes=pc_list, url='/feedback/')
 class PcFeedback:
+    @TimeIt(name="PcFeedback")
     def __call__(self, request):
         return '200 OK', renderer('feedback.html', folder=TEMPLATES_FOLDER)
 
 
 #############################################################################
-@AppRoute(routes=pc_list, url='/create-category/')
+@AppRouter(routes=pc_list, url='/create-category/')
 class PcCreateCategory:
+    @TimeIt(name="PcCreateCategory")
     def __call__(self, request):
 
         print(request)
@@ -99,8 +104,9 @@ class PcCreateCategory:
 
 
 #############################################################
-@AppRoute(routes=pc_list, url='/courses-list/')
+@AppRouter(routes=pc_list, url='/courses-list/')
 class PcCoursesList:
+    @TimeIt(name="PcCoursesList")
     def __call__(self, request):
         logger.log('Список курсов')
         try:
@@ -113,10 +119,11 @@ class PcCoursesList:
 
 
 #############################################################
-@AppRoute(routes=pc_list, url='/create-course/')
+@AppRouter(routes=pc_list, url='/create-course/')
 class PcCreateCourse:
     category_id = -1
 
+    @TimeIt(name="PcCreateCourse")
     def __call__(self, request):
         if request['method'] == 'POST':
             # метод пост
@@ -148,8 +155,9 @@ class PcCreateCourse:
 
 
 #############################################################
-@AppRoute(routes=pc_list, url='/copy-course/')
+@AppRouter(routes=pc_list, url='/copy-course/')
 class PcCopyCourse:
+    @TimeIt(name="PcCopyCourse")
     def __call__(self, request):
 
         print(f"PcCopyCourse - request: {request}")
