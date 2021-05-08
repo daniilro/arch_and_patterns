@@ -10,7 +10,7 @@ from views import pc_list
 
 #############################################################
 
-application = Framework(pc_list, fc_list)
+# application = Framework(pc_list, fc_list)
 # application = DebugApplication(pc_list, fc_list)
 application = FakeApplication(pc_list, fc_list)
 
