@@ -1,15 +1,16 @@
 import jsonpickle
-from simba_framework.templator import render
+
+from dindondon_framework.templator import renderer
 
 
-# поведенческий паттерн - наблюдатель
-# Курс
+#####################################################
 class Observer:
 
     def update(self, subject):
         pass
 
 
+#####################################################
 class Subject:
 
     def __init__(self):
@@ -20,18 +21,21 @@ class Subject:
             item.update(self)
 
 
+#####################################################
 class SmsNotifier(Observer):
 
     def update(self, subject):
         print('SMS->', 'к нам присоединился', subject.students[-1].name)
 
 
+#####################################################
 class EmailNotifier(Observer):
 
     def update(self, subject):
         print(('EMAIL->', 'к нам присоединился', subject.students[-1].name))
 
 
+#####################################################
 class BaseSerializer:
 
     def __init__(self, obj):
@@ -45,7 +49,7 @@ class BaseSerializer:
         return jsonpickle.loads(data)
 
 
-# поведенческий паттерн - Шаблонный метод
+#####################################################
 class TemplateView:
     template_name = 'template.html'
 
@@ -58,12 +62,13 @@ class TemplateView:
     def render_template_with_context(self):
         template_name = self.get_template()
         context = self.get_context_data()
-        return '200 OK', render(template_name, **context)
+        return '200 OK', renderer(template_name, **context)
 
     def __call__(self, request):
         return self.render_template_with_context()
 
 
+#####################################################
 class ListView(TemplateView):
     queryset = []
     template_name = 'list.html'
@@ -83,6 +88,7 @@ class ListView(TemplateView):
         return context
 
 
+#####################################################
 class CreateView(TemplateView):
     template_name = 'create.html'
 
@@ -104,13 +110,14 @@ class CreateView(TemplateView):
             return super().__call__(request)
 
 
-# поведенческий паттерн - Стратегия
+#####################################################
 class ConsoleWriter:
 
     def write(self, text):
         print(text)
 
 
+#####################################################
 class FileWriter:
 
     def __init__(self, file_name):
@@ -120,3 +127,4 @@ class FileWriter:
         with open(self.file_name, 'a', encoding='utf-8') as f:
             f.write(f'{text}\n')
 
+#####################################################
