@@ -5,7 +5,7 @@
 import copy
 import quopri
 
-from patterns.behavers import Subject
+from patterns.behavers import *
 
 
 class User:
@@ -61,19 +61,16 @@ class Course(CoursePrototype, Subject):
         self.notify()
 
 
-# Интерактивный курс
 class InteractiveCourse(Course):
     pass
 
 
-# Курс в записи
 class RecordCourse(Course):
     pass
 
 
-# Категория
 class Category:
-    # реестр?
+
     auto_id = 0
 
     def __init__(self, name, category):
@@ -90,7 +87,6 @@ class Category:
         return result
 
 
-# порождающий паттерн Абстрактная фабрика - фабрика курсов
 class CourseFactory:
     types = {
         'interactive': InteractiveCourse,
@@ -171,11 +167,13 @@ class SingletonByName(type):
 ###############################################################################
 class Logger(metaclass=SingletonByName):
 
-    def __init__(self, name):
+    # def __init__(self, name, writer=ConsoleWriter()):
+    def __init__(self, name, writer=FileWriter("log/log.log")):
         self.name = name
+        self.writer = writer
 
-    @staticmethod
-    def log(text):
-        print(f'log ---> {text}')
+    def log(self, text):
+        text = f'log: {self.name} logger ---> {text}'
+        self.writer.write(text)
 
 ###############################################################################
