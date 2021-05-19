@@ -1,5 +1,9 @@
+'''
+
+'''
+
 import sqlite3
-from сreational_patterns import Student
+from base_patterns import Student
 
 
 class StudentMapper:
@@ -39,7 +43,6 @@ class StudentMapper:
 
     def update(self, obj):
         statement = f"UPDATE {self.tablename} SET name=? WHERE id=?"
-        # Где взять obj.id? Добавить в DomainModel? Или добавить когда берем объект из базы
         self.cursor.execute(statement, (obj.name, obj.id))
         try:
             self.connection.commit()
@@ -53,6 +56,7 @@ class StudentMapper:
             self.connection.commit()
         except Exception as e:
             raise DbDeleteException(e.args)
+
 
 class DbCommitException(Exception):
     def __init__(self, message):
@@ -68,33 +72,7 @@ class DbDeleteException(Exception):
     def __init__(self, message):
         super().__init__(f'Db delete error: {message}')
 
+
 class RecordNotFoundException(Exception):
     def __init__(self, message):
         super().__init__(f'Record not found: {message}')
-"""
-connection = sqlite3.connect('patterns.sqlite')
-
-
-# архитектурный системный паттерн - Data Mapper
-class MapperRegistry:
-    mappers = {
-        'student': StudentMapper,
-        #'category': CategoryMapper
-    }
-
-    @staticmethod
-    def get_mapper(obj):
-        print(f"ой ой{obj.__class__}")
-        if isinstance(obj, Student):
-            print("дадада")
-            #return StudentMapper(connection)
-        #if isinstance(obj, Category):
-            #return CategoryMapper(connection)
-
-    @staticmethod
-    def get_current_mapper(name):
-        return MapperRegistry.mappers[name](connection)
-
-
-
-"""

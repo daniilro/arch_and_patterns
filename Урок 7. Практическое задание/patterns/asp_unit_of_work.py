@@ -1,7 +1,10 @@
+'''
+
+'''
+
 import threading
 
 
-# архитектурный системный паттерн - UnitOfWork
 class UnitOfWork:
     """
     Паттерн UNIT OF WORK
@@ -71,4 +74,3 @@ class DomainObject:
 
     def mark_removed(self):
         UnitOfWork.get_current().register_removed(self)
-

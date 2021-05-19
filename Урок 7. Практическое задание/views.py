@@ -3,12 +3,18 @@
 '''
 
 from dindondon_framework.templator import renderer
-from patterns.base_patterns import Engine, Logger
-from patterns.behavers import ListView, CreateView
+from patterns.base_patterns import Engine, Logger, MapperRegistry
+from patterns.behavers import EmailNotifier, SmsNotifier, TemplateView, ListView, CreateView, BaseSerializer
 from patterns.decors import AppRouter, TimeIt
+from patterns.asp_unit_of_work import UnitOfWork
 
 site = Engine()
 logger = Logger('main')
+
+email_notifier = EmailNotifier()
+sms_notifier = SmsNotifier()
+UnitOfWork.new_current()
+UnitOfWork.get_current().set_mapper_registry(MapperRegistry)
 
 pc_list = {}
 
@@ -184,8 +190,14 @@ class PcCopyCourse:
 
 @AppRouter(routes=pc_list, url='/student-list/')
 class StudentListView(ListView):
-    queryset = site.students
+    #    queryset = site.students
+    #    template_name = 'student_list.html'
+
     template_name = 'student_list.html'
+
+    def get_queryset(self):
+        mapper = MapperRegistry.get_current_mapper('student')
+        return mapper.all()
 
 
 #############################################################
@@ -198,6 +210,9 @@ class StudentCreateView(CreateView):
         name = site.decode_value(name)
         new_obj = site.create_user('student', name)
         site.students.append(new_obj)
+
+        new_obj.mark_new()
+        UnitOfWork.get_current().commit()
 
 
 #############################################################
